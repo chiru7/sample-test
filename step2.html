@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>step2</title>
+    <script>
+        document.addEventListener("DOMContentLoaded", event => {
+            console.log('DOMContentLoaded event: %o', event);
+        });
+
+        window.addEventListener("load", event => {
+            console.log('load event: %o', event);
+
+            window.addEventListener('pageshow', (evt) => {
+                if (evt.persisted) {
+                    // キャッシュからの復元
+                    console.log('キャッシュから復元');
+                }
+                else {
+                    console.log('新規に読み込み');
+                }
+
+                const entries = performance.getEntriesByType("navigation");
+                entries.forEach(function (entry) {
+                    if (entry.type == 'back_forward') {
+                        // ブラウザの履歴から読み込まれた際の処理
+                        console.log('ブラウザの履歴から読み込み');
+                    }
+                });
+            });
+
+            console.log('load 画面初期表示時の実行処理');
+        });
+    </script>
+</head>
+
+<body>
+    <div>
+        test
+    </div>
+</body>
+
+</html>
