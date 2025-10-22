@@ -4,37 +4,95 @@
 <head>
     <meta charset="UTF-8" />
     <title>step1</title>
+    <style>
+#alert-dialog {
+  width: 300px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  background-color: white;
+}
+    </style>
     <script>
-        document.addEventListener("DOMContentLoaded", event => {
-            console.log('DOMContentLoaded event: %o', event);
-        });
+        // document.addEventListener("DOMContentLoaded", event => {
+        //     console.log('DOMContentLoaded event: %o', event);
+        // });
 
-        window.addEventListener("load", event => {
-            console.log('load event: %o', event);
+        // window.addEventListener("load", event => {
+        //     console.log('load event: %o', event);
 
-            window.addEventListener('pageshow', (evt) => {
-                if (evt.persisted) {
-                    // キャッシュからの復元
-                    console.log('キャッシュから復元');
-                }
-                else {
-                    console.log('新規に読み込み');
-                }
+        //     window.addEventListener('pageshow', (evt) => {
+        //         if (evt.persisted) {
+        //             // キャッシュからの復元
+        //             console.log('キャッシュから復元');
+        //         }
+        //         else {
+        //             console.log('新規に読み込み');
+        //         }
 
-                const entries = performance.getEntriesByType("navigation");
-                entries.forEach(function (entry) {
-                    if (entry.type == 'back_forward') {
-                        // ブラウザの履歴から読み込まれた際の処理
-                        console.log('ブラウザの履歴から読み込み');
+        //         const entries = performance.getEntriesByType("navigation");
+        //         entries.forEach(function (entry) {
+        //             if (entry.type == 'back_forward') {
+        //                 // ブラウザの履歴から読み込まれた際の処理
+        //                 console.log('ブラウザの履歴から読み込み');
+        //             }
+        //         });
+        //     });
+
+        //     console.log('load 画面初期表示時の実行処理');
+        // });
+
+
+        function permisson() {
+            // if (!confirm("テスト　yes/no")) {
+            //     return false;
+            // }
+            alert("test");
+            return true;
+        }
+
+        function confirmation() {
+            return permisson();
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+
+            // confirmation();
+
+            // ブラウザバック時のクッション履歴を生成
+            history.pushState(null, null, null);
+            // history.replaceState(null, null, null);
+            window.addEventListener('popstate', function (e) {
+                try {
+                    const result = confirmation();
+                    if (result) {
+                        history.back();
+                    } else {
+                        // ブラウザバック時のクッション履歴を再生成
+                        history.replaceState(null, null, null);
                     }
-                });
+                } catch (ex) {
+                    console.log(ex);
+                }
             });
 
-            console.log('load 画面初期表示時の実行処理');
+            // const showDialogButton = document.getElementById('showDialogButton');
+            // const closeDialogButton = document.getElementById('closeDialogButton');
+            // const alertDialog = document.getElementById('alert-dialog');
+
+            // // ボタンをクリックしたときにダイアログを表示
+            // showDialogButton.addEventListener('click', () => {
+            //     alertDialog.showModal(); // モーダル（背景を操作できない）で表示
+            // });
+
+            // // 閉じるボタンをクリックしたときにダイアログを非表示
+            // closeDialogButton.addEventListener('click', () => {
+            //     alertDialog.close();
+            // });
         });
     </script>
 </head>
-
 <body>
     <form action="./step2.html" method="get">
         <div>
@@ -47,7 +105,17 @@
         </div>
         <input type="submit" value="送信">
     </form>
-    <a href="./step2.html">step2</a>
+    <a href="./step1.html">step2</a>
+
+    <!-- <button id="showDialogButton">アラートを表示</button>
+
+    <dialog id="alert-dialog">
+        <div class="dialog-content">
+            <h2>タイトル</h2>
+            <p>ここにアラートメッセージが入ります。</p>
+            <button id="closeDialogButton">閉じる</button>
+        </div>
+    </dialog> -->
 </body>
 
 </html>
