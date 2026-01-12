@@ -1,0 +1,69 @@
+<html>
+
+<head>
+    <style>
+        /* 文字列を全てパスワード記号で埋めるフォントを設定 */
+        /* @font-face {
+            font-family: 'password';
+            src: url(text-security-disc.ttf);
+        } */
+
+        /** クラスに password を持つならば入力された文字列を全てパスワード記号化 */
+        /* input.password {
+            font-family: 'password';
+        }
+
+        input {
+            -webkit-text-security: square;
+        } */
+    </style>
+</head>
+
+<body>
+    <h2>パスワード保存機能を動かさないパスワード入力欄</h2>
+    <form action="" method="post">
+        <!-- type="text" なパスワード入力欄を用意することによって type="password" で起動するブラウザのパスワード保存機能を回避 -->
+        <!-- 覗き込み防止機能付きである素の type="password"入力欄と同じデザインにするために class="password" を追加。"password" をクラスに持つ要素中の文字列の font は↑で定義した通り全て記号となります   -->
+        <label for="input-password">パスワード
+            <input type="text" id="input-password" class="password" name="password" autocomplete="off">
+        </label>
+        <button type="button" class="toggle-password-display">表示</button>
+        <button type="submit">送信</button>
+    </form>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            document.querySelector('.toggle-password-display').addEventListener('click', toggleDisplayStr);
+            document.querySelector('#input-password').addEventListener('input', isKanji);
+        });
+
+        /**　class から password の有無を切り替える関数　*/
+        function toggleDisplayStr() {
+            // const inputEl = document.querySelector('input#input-password');
+            // if (inputEl.classList.contains('password')) {
+            //     inputEl.classList.remove('password')
+            // } else {
+            //     inputEl.classList.add('password')
+            // }
+        }
+
+        let prevLastChar = "";
+        let prevValue = "";
+
+        function isKanji() {
+            const inputEl = document.querySelector('input#input-password');
+            const curValue = inputEl.value;
+            const curLastChar = curValue.substring(curValue.length - 1);
+            const regexp = /\p{Script=Han}/u;
+
+            console.log("prevValue : %s, length: %d", prevValue, prevValue.length);
+            console.log("curValue  : %s, length: %d", curValue, curValue.length);
+            console.log("prevLastChar : %s, result: %o", prevLastChar, regexp.test(prevLastChar));
+            console.log("curLastChar  : %s, result: %o", curLastChar, regexp.test(curLastChar));
+
+            prevLastChar = curLastChar;
+            prevValue = curValue;
+        }
+    </script>
+</body>
+
+</html>
